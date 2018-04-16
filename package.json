@@ -1,0 +1,25 @@
+{
+  "name": "jest-test-generator",
+  "version": "0.0.1",
+  "description": "Automatically scan folders for JavaScript files, creating test files and empty tests for each exported function.",
+  "main": "testGen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dallashall/jest-test-generator.git"
+  },
+  "keywords": [
+    "test",
+    "jest",
+    "generator",
+    "javascript"
+  ],
+  "author": "dallashall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dallashall/jest-test-generator/issues"
+  },
+  "homepage": "https://github.com/dallashall/jest-test-generator#readme"
+}
