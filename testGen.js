@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
 
@@ -29,7 +30,7 @@ const createTestFolder = function createTestFolder() {
     .then(() => console.log('Made directory'))
     .catch(() => console.log('Failed to create directory'));
 };
-// createTestFolder();
+createTestFolder();
 
 const ignoredPaths = fs.readFileSync('./.testgenignore').toString().split("\r").join('').split("\n");
 console.log(ignoredPaths);
