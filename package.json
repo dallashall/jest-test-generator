@@ -1,6 +1,6 @@
 {
   "name": "jest-test-generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Automatically scan folders for JavaScript files, creating test files and empty tests for each exported function.",
   "main": "testGen.js",
   "scripts": {

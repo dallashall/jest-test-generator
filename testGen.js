@@ -44,9 +44,9 @@ const createTestFilesForDir = function createTestFilesForDir(dir) {
     .then((files) => {
       const testFileNames = files.map(file => file.replace('.js', '.test.js'));
       for (let idx = 0; idx < files.length; idx++) {
-        const file = '.\\' + path.join('./', dir, files[idx].replace('.js', ''));
+        const file = '.\\' + path.join('./', dir, files[idx].replace('.js', '').split('\\').join('/'));
         const normalizedPath = file.split('\\').join('/');
-        const req = require(file.replace('\\', '/'));
+        const req = require(normalizedPath);
         console.log('dynamic require', Object.keys(req));
         const testFileName = testFileNames[idx];
         const originalFile = files[idx];
