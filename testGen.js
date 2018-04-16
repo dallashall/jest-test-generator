@@ -46,11 +46,25 @@ const createTestFilesForDir = function createTestFilesForDir(dir) {
       for (let idx = 0; idx < files.length; idx++) {
         const file = '.\\' + path.join('./', dir, files[idx].replace('.js', '').split('\\').join('/'));
         const normalizedPath = file.split('\\').join('/');
-        const req = require(normalizedPath);
-        console.log('dynamic require', Object.keys(req));
-        const testFileName = testFileNames[idx];
-        const originalFile = files[idx];
-        fs.writeFileSync(`__tests__\\${dir}\\${testFileName}`, fileTest(req, normalizedPath, originalFile));
+        try {
+          const req = require(normalizedPath);
+          console.log('dynamic require', Object.keys(req));
+          const testFileName = testFileNames[idx];
+          const originalFile = files[idx];
+          fs.writeFileSync(`__tests__\\${dir}\\${testFileName}`, fileTest(req, normalizedPath, originalFile));
+        } catch (e) {
+          const jsFile = fs.readFileSync(normalizedPath).toString().split("\n");
+          const matches = [];
+          jsFile.forEach((line) =>  {
+            const exportConstMatch = line.match(/export\sconst\s(\w+)\s/);
+            if (exportConstMatch.length > 0) matches.push({ name: exportConstMatch[1], length: 0 });
+            const exportDefaultMatch = line.match(/export\sdefault\s(\w+)[\s\;\$]/);
+            if (exportDefaultMatch.length > 0) matches.push({ name: exportDefaultMatch[1], length: 0 });
+          });
+        }
+        // write file imports
+        // scaffold base description
+        // insert test for each file
       }
     });
 };
