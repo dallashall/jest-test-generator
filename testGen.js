@@ -43,24 +43,42 @@ const createTestFilesForDir = function createTestFilesForDir(dir) {
   jsFilesInDir(dir)
     .then((files) => {
       const testFileNames = files.map(file => file.replace('.js', '.test.js'));
-      for (let idx = 0; idx < files.length; idx++) {
+      console.log(testFileNames);
+      for (let idx = 0; idx < testFileNames.length; idx++) {
         const file = '.\\' + path.join('./', dir, files[idx].replace('.js', '').split('\\').join('/'));
         const normalizedPath = file.split('\\').join('/');
+        console.log(normalizedPath);
         try {
           const req = require(normalizedPath);
           console.log('dynamic require', Object.keys(req));
+          console.log(file);
           const testFileName = testFileNames[idx];
           const originalFile = files[idx];
           fs.writeFileSync(`__tests__\\${dir}\\${testFileName}`, fileTest(req, normalizedPath, originalFile));
+          console.log('Written');
         } catch (e) {
-          const jsFile = fs.readFileSync(normalizedPath).toString().split("\n");
+          console.log('Catch!');
+          const jsFile = fs.readFileSync(normalizedPath + '.js').toString().split("\n");
           const matches = [];
-          jsFile.forEach((line) =>  {
+          jsFile.forEach((line) => {
             const exportConstMatch = line.match(/export\sconst\s(\w+)\s/);
-            if (exportConstMatch.length > 0) matches.push({ name: exportConstMatch[1], length: 0 });
+            if (exportConstMatch) {
+              if (exportConstMatch.length > 0) {
+                const args = line.match(/export\sconst.+\((.+)\)/) || [];
+                console.log('args', args);
+                let len;
+                if (args[1]) {
+                  len = args[1].split(',').length;
+                } else {
+                  len = 0;
+                }
+                matches.push({ name: exportConstMatch[1], length: len });
+              }
+            }
             const exportDefaultMatch = line.match(/export\sdefault\s(\w+)[\s\;\$]/);
-            if (exportDefaultMatch.length > 0) matches.push({ name: exportDefaultMatch[1], length: 0 });
+            if (exportDefaultMatch && exportDefaultMatch.length > 0) matches.push({ name: exportDefaultMatch[1], length: 0 });
           });
+          console.log('matches', matches);
         }
         // write file imports
         // scaffold base description
