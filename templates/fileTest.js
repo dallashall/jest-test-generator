@@ -1,6 +1,6 @@
 const individualTest = require('./individualTest');
 
-const descTop = name => `describe('${name}', () => {\n`;
+const descTop = name => `describe.skip('${name}', () => {\n`;
 const descBottom = '});\n';
 
 const fileTest = function fileTest(req, path, name) {
@@ -15,7 +15,7 @@ const fileTest = function fileTest(req, path, name) {
   pathToOriginal += path.replace('./', '');
 
   if (typeof req === 'function') {
-    fileString = `const ${req.name || 'anonymousFn'} = require('${pathToOriginal}');\n${fileString}`;
+    fileString = `const ${req.name || 'anonymousFn'} = require('${pathToOriginal}');\n\n${fileString}`;
     fileString += individualTest(req);
   }
 
@@ -36,7 +36,7 @@ const fileTest = function fileTest(req, path, name) {
 
   const fns = props.map(fn => fn.key);
   if (fns.length !== 0) {
-    fileString = `const { ${fns.join(', ')} } = require('${pathToOriginal}')\n${fileString}`;
+    fileString = `const { ${fns.join(', ')} } = require('${pathToOriginal}');\n\n${fileString}`;
   }
   fileString += descBottom;
   return fileString;
